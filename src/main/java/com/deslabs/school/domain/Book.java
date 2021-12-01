@@ -15,6 +15,7 @@ import javax.security.auth.Subject;
  *Year: 2021
  */
 
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 
 @Entity
 public class Book {

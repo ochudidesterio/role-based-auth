@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 /*
@@ -15,10 +16,11 @@ import java.util.List;
  *Year: 2021
  */
 
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 
 
 @Entity
-public class Department {
+public class Department  {
     @Id
     private String depart_name;
     @JsonIgnore

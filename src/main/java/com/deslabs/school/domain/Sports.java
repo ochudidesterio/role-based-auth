@@ -14,6 +14,7 @@ import java.util.List;
  *Year: 2021
  */
 
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 
 @Entity
 public class Sports {

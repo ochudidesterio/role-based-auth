@@ -6,11 +6,19 @@ import com.deslabs.school.domain.Teacher;
 import com.deslabs.school.repository.DepartmentDao;
 import com.deslabs.school.repository.RoleDao;
 import com.deslabs.school.repository.TeacherDao;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /*
@@ -19,20 +27,25 @@ import java.util.List;
  *Year: 2021
  */
 @Transactional
-@Service
-public class TeacherServiceImpl implements TeacherService {
+@Service(value = "teacherService")
+@Slf4j
+public class TeacherServiceImpl implements TeacherService, UserDetailsService {
     private final TeacherDao teacherDao;
     private final DepartmentDao departmentDao;
     private final RoleDao roleDao;
-@Autowired
-    public TeacherServiceImpl(TeacherDao teacherDao, DepartmentDao departmentDao, RoleDao roleDao) {
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public TeacherServiceImpl(TeacherDao teacherDao, DepartmentDao departmentDao, RoleDao roleDao, PasswordEncoder passwordEncoder) {
         this.teacherDao = teacherDao;
         this.departmentDao = departmentDao;
         this.roleDao = roleDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public Teacher registerTeacher(Teacher teacher) {
+        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
         return teacherDao.save(teacher);
     }
 
@@ -71,22 +84,38 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher addTeachertoDepartment(String name, Integer teacherId) {
 
-            Teacher teacher = getTeacher(teacherId);
+        Teacher teacher = getTeacher(teacherId);
 
-            Department department = departmentDao.findById(name).get();
+        Department department = departmentDao.findById(name).get();
 
-            teacher.setDepartment(department);
-            return teacherDao.save(teacher);
+        teacher.setDepartment(department);
+        return teacherDao.save(teacher);
 
     }
 
     @Override
     public Teacher addRole(Integer roleId, Integer teacherId) {
-        Teacher teacher= getTeacher(teacherId);
+        Teacher teacher = getTeacher(teacherId);
         Role role = roleDao.findById(roleId).get();
-        List<Role>roles = teacher.getRoles();
+        List<Role> roles = teacher.getRoles();
         roles.add(role);
         teacher.setRoles(roles);
         return teacherDao.save(teacher);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Teacher teacher = teacherDao.findByEmail(email);
+        if (teacher == null) {
+            log.error("teacher not found in database");
+            throw new UsernameNotFoundException("teacher not found");
+        } else {
+            log.info("Teacher with email {} found", email);
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        teacher.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRole_name())));
+
+        // return  TeacherDetailImpl.build(teacher);
+        return new User(teacher.getEmail(), teacher.getPassword(), authorities);
     }
 }

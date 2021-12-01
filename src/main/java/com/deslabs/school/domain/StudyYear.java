@@ -15,6 +15,7 @@ import java.util.List;
  */
 
 
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 
 @Entity
 public class StudyYear {
