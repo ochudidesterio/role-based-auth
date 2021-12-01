@@ -36,7 +36,7 @@ public class Student {
     private Status status;
 
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "STUDENT_ROLE",
             joinColumns = @JoinColumn(name ="STUDENT_ID", referencedColumnName = "regno"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "role_id"))

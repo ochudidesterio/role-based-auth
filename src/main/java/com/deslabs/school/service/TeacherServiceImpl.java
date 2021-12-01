@@ -46,6 +46,7 @@ public class TeacherServiceImpl implements TeacherService, UserDetailsService {
     @Override
     public Teacher registerTeacher(Teacher teacher) {
         teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
+        teacher.setRoles(List.of(roleDao.getById(2)));
         return teacherDao.save(teacher);
     }
 

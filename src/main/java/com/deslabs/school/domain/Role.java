@@ -21,7 +21,6 @@ import java.util.List;
 @Entity
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int role_id;
     private String role_name;
 
@@ -35,7 +34,8 @@ public class Role {
 
     private List<Teacher> teacher;
 
-    public Role(String role) {
+    public Role(String name) {
+        this.role_name=name;
     }
 
     public Role() {

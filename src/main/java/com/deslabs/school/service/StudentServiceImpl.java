@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -64,8 +65,10 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
     @Override
     public Student registerStudent(Student student) {
+
         student.setPassword(passwordEncoder.encode(student.getPassword()));
 
+        student.setRoles(List.of(roleDao.getById(1)));
         log.info("student saved");
         return studentDao.save(student);
     }
@@ -80,7 +83,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
         Student updateStudent = getStudent(regno);
         updateStudent.setAge(student.getAge());
         updateStudent.setFee(student.getFee());
-        updateStudent.setPassword(student.getPassword());
         updateStudent.setEmail(student.getEmail());
         updateStudent.setFee_paid(student.getFee_paid());
         updateStudent.setLast_name(student.getLast_name());
