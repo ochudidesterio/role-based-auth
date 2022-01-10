@@ -67,4 +67,9 @@ public class CourseServiceImpl implements Courseservice {
         course.setStudents(studentList);
         return courseDao.save(course);
     }
+
+    @Override
+    public List<Course> findByStudReg(int regno) {
+        return courseDao.findByStudents(regno);
+    }
 }

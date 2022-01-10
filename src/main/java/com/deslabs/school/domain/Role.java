@@ -19,6 +19,7 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 
 @Entity
+
 public class Role {
     @Id
     private int role_id;
@@ -27,25 +28,20 @@ public class Role {
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
 
-    private List<Student> student;
+    private List<Teacher> teacher;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
 
-    private List<Teacher> teacher;
+    private List<Parent> parent;
+
 
     public Role(String name) {
         this.role_name=name;
     }
 
     public Role() {
-    }
 
-    public Role(int role_id, String role_name, List<Student> student, List<Teacher> teacher) {
-        this.role_id = role_id;
-        this.role_name = role_name;
-        this.student = student;
-        this.teacher = teacher;
     }
 
     public int getRole_id() {
@@ -64,13 +60,7 @@ public class Role {
         this.role_name = role_name;
     }
 
-    public List<Student> getStudent() {
-        return student;
-    }
 
-    public void setStudent(List<Student> student) {
-        this.student = student;
-    }
 
     public List<Teacher> getTeacher() {
         return teacher;
@@ -78,5 +68,13 @@ public class Role {
 
     public void setTeacher(List<Teacher> teacher) {
         this.teacher = teacher;
+    }
+
+    public List<Parent> getParent() {
+        return parent;
+    }
+
+    public void setParent(List<Parent> parent) {
+        this.parent = parent;
     }
 }

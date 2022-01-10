@@ -25,6 +25,10 @@ public class Course {
     private int unit;
     private String name;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
+    private List<StudentMarks>studentMarks;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEACHER_ID", referencedColumnName = "teacher_id")
     private Teacher teacher;
@@ -33,6 +37,7 @@ public class Course {
     @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
     private List<Book> books;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "STUDENT_COURSE",
             joinColumns = @JoinColumn(name = "COURSE_UNIT", referencedColumnName = "unit"),
@@ -41,6 +46,14 @@ public class Course {
 
     public int getUnit() {
         return unit;
+    }
+
+    public List<StudentMarks> getStudentMarks() {
+        return studentMarks;
+    }
+
+    public void setStudentMarks(List<StudentMarks> studentMarks) {
+        this.studentMarks = studentMarks;
     }
 
     public void setUnit(int unit) {

@@ -15,11 +15,14 @@ import java.util.List;
 @Entity
 public class Teacher  {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int teacher_Id;
     private String first_name;
     private String last_name;
-    private int age;
+    private String surname;
+    private String dob;
     private String email;
+    private String phone_number;
     private String password;
     private String salary;
     @Enumerated(EnumType.STRING)
@@ -48,16 +51,6 @@ public class Teacher  {
     private StudyYear studyYear;
 
 
-
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public int getTeacher_Id() {
         return teacher_Id;
     }
@@ -82,12 +75,20 @@ public class Teacher  {
         this.last_name = last_name;
     }
 
-    public int getAge() {
-        return age;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 
     public String getEmail() {
@@ -96,6 +97,22 @@ public class Teacher  {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getSalary() {

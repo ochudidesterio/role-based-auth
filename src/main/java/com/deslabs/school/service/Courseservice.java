@@ -16,4 +16,5 @@ public interface Courseservice {
     Course updateCourse(Integer unit,Course course);
     Object deleteCourse(Integer unit);
     Course addStudent(Integer regno, Integer unit);
+    List<Course>findByStudReg(int regno);
 }

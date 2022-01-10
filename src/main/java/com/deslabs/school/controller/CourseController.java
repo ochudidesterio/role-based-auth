@@ -49,6 +49,15 @@ public class CourseController {
            return ResponseHandler.response(e.getMessage(),HttpStatus.MULTI_STATUS,null);
         }
     }
+    @GetMapping("/course/student/{regno}")
+    public ResponseEntity<Object>getCourseByStudRegNo(@PathVariable Integer regno){
+        try{
+            List<Course> courses = service.findByStudReg(regno);
+            return ResponseHandler.response("courses",HttpStatus.OK,courses);
+        }catch (Exception e){
+            return ResponseHandler.response(e.getMessage(),HttpStatus.MULTI_STATUS,null);
+        }
+    }
     @DeleteMapping("/delete/course/{unit}")
     public ResponseEntity<Object>deleteCourse(@PathVariable Integer unit){
         try{

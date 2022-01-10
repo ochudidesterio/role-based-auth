@@ -16,5 +16,4 @@ public interface StudentService {
     Student getStudent(Integer regno);
     Student updateStudent(Integer regno,Student student);
     Object deleteStudent(Integer regno);
-    Student addRole(Integer roleId, Integer regno);
 }

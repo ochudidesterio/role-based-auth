@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 @Entity
 public class Student {
@@ -25,35 +25,43 @@ public class Student {
     private int regno;
     private String first_name;
     private String last_name;
-    private String email;
+    private String surname;
     private String fee_paid;
     private String fee;
-    private int age;
-    private String password;
+    private String dob;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "STUDENT_ROLE",
-            joinColumns = @JoinColumn(name ="STUDENT_ID", referencedColumnName = "regno"),
-            inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "role_id"))
-    private List<Role>roles;
 
     @JsonIgnore
-    @ManyToOne( fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<StudentMarks> studentMarks;
+
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STUDY_YEAR", referencedColumnName = "year")
     private StudyYear studyYear;
 
     @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PARENT", referencedColumnName = "parentId")
+    private Parent parent;
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "students")
-    private List<Course>courses;
+    private List<Course> courses;
 
     @ManyToMany(mappedBy = "students")
     @JsonIgnore
-    private List<Sports>sports;
+    private List<Sports> sports;
+
+    public List<StudentMarks> getStudentMarks() {
+        return studentMarks;
+    }
+
+    public void setStudentMarks(List<StudentMarks> studentMarks) {
+        this.studentMarks = studentMarks;
+    }
 
     public int getRegno() {
         return regno;
@@ -79,12 +87,12 @@ public class Student {
         this.last_name = last_name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getFee_paid() {
@@ -103,20 +111,12 @@ public class Student {
         this.fee = fee;
     }
 
-    public int getAge() {
-        return age;
+    public String getDob() {
+        return dob;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 
     public Gender getGender() {
@@ -127,21 +127,6 @@ public class Student {
         this.gender = gender;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 
     public StudyYear getStudyYear() {
         return studyYear;
@@ -149,6 +134,14 @@ public class Student {
 
     public void setStudyYear(StudyYear studyYear) {
         this.studyYear = studyYear;
+    }
+
+    public Parent getParent() {
+        return parent;
+    }
+
+    public void setParent(Parent parent) {
+        this.parent = parent;
     }
 
     public List<Course> getCourses() {

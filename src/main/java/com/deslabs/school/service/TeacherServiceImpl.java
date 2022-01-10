@@ -64,7 +64,9 @@ public class TeacherServiceImpl implements TeacherService, UserDetailsService {
     public Teacher updateTeacher(Integer teacherId, Teacher teacher) {
         Teacher updateTeacher = getTeacher(teacherId);
         updateTeacher.setTeacher_Id(teacher.getTeacher_Id());
-        updateTeacher.setAge(teacher.getAge());
+        updateTeacher.setPhone_number(teacher.getPhone_number());
+        updateTeacher.setSurname(teacher.getSurname());
+        updateTeacher.setDob(teacher.getDob());
         updateTeacher.setGender(teacher.getGender());
         updateTeacher.setCourses(teacher.getCourses());
         updateTeacher.setFirst_name(teacher.getFirst_name());
