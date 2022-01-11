@@ -6,6 +6,7 @@ import com.deslabs.school.response.LoginResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -13,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.security.auth.message.AuthException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,10 +41,20 @@ public class CustomAuthenitcationfilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-       String username=request.getParameter("username");
-       String password= request.getParameter("password");
-       log.info("Username is {}",username);
-       log.info("Password is {}",password);
+//       String username=request.getParameter("username");
+//       String password= request.getParameter("password");
+        String username;
+        String password;
+        try{
+            Map<String, String>requestMap= new ObjectMapper().readValue(request.getInputStream(),Map.class);
+            username=requestMap.get("username");
+            password=requestMap.get("password");
+            log.info("Username is {}",username);
+            log.info("Password is {}",password);
+        }catch(IOException e){
+            throw new AuthenticationServiceException(e.getMessage(),e);
+        }
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
         return authenticationManager.authenticate(authenticationToken);
     }
